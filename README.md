@@ -1,0 +1,74 @@
+# Bangumi-Roulette
+
+一个基于 Bangumi API 的番剧抽签转盘应用
+
+
+
+## 项目文件结构
+
+
+
+├── requirements.txt # 依赖包列表
+
+├── README.md # 项目说明
+
+└── ui/
+
+ ├── init.py
+
+ ├── components.py # UI组件（按钮、卡片、头像等）
+
+ ├── history_tab.py # 历史记录标签页
+
+ ├── settings_tab.py # 设置标签页（用户认证、筛选设置）
+
+ ├── theme.py # 主题管理系统
+
+ └── wheel_tab.py # 轮盘抽签标签页
+
+
+
+1. 克隆仓库：
+
+ `ash
+
+ git clone https://github.com/AWA0427/Bangumi-Roulette.git
+
+ cd Bangumi-Roulette
+
+ `" >> README.md
+echo " >> README.md
+echo 
+
+2.
+
+安装依赖： >> README.md
+echo 
+
+`ash >> README.md
+echo 
+
+pip
+
+install
+
+-r
+
+requirements.txt >> README.md
+echo 
+
+`"
+
+
+
+3. 运行应用：
+
+ `ash
+
+ python main.py
+
+
+
+
+
+本代码由AI辅助生成。AI真好用啊！
