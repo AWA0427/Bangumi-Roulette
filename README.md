@@ -30,13 +30,13 @@
 
 ### 1.克隆仓库：
 
-
+```
  git clone https://github.com/AWA0427/Bangumi-Roulette.git
 
  cd Bangumi-Roulette
-
+```
 ### 2.安装依赖： 
-
+```
 pip
 
 install
@@ -44,15 +44,15 @@ install
 -r
 
 requirements.txt 
-
+```
 
 ### 3.运行应用：
 
  
-
+```
  python main.py
 
-
+```
 
 
 ## 说明
