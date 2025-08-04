@@ -6,7 +6,7 @@
 
 ## 项目文件结构
 
-
+├── main.py                  # 主程序入口
 
 ├── requirements.txt # 依赖包列表
 
@@ -30,22 +30,20 @@
 
 1. 克隆仓库：
 
- `ash
 
  git clone https://github.com/AWA0427/Bangumi-Roulette.git
 
  cd Bangumi-Roulette
 
- `" >> README.md
+ " >> README.md
 echo " >> README.md
 echo 
 
-2.
-
-安装依赖： >> README.md
+2.安装依赖： 
+>> README.md
 echo 
 
-`ash >> README.md
+ >> README.md
 echo 
 
 pip
@@ -57,13 +55,12 @@ install
 requirements.txt >> README.md
 echo 
 
-`"
 
 
 
 3. 运行应用：
 
- `ash
+ 
 
  python main.py
 
