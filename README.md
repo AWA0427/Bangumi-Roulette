@@ -1,3 +1,11 @@
+---
+# 目前代码存在问题，正在修改
+---
+
+
+
+
+
 # Bangumi-Roulette
 
 一个基于 Bangumi API 的番剧抽签转盘应用
