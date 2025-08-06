@@ -23,7 +23,7 @@ import {
   Avatar,
   Divider,
 } from '@mui/material';
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
 import SettingsIcon from '@mui/icons-material/Settings';
 import CasinoIcon from '@mui/icons-material/Casino';
@@ -31,35 +31,22 @@ import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import LogoutIcon from '@mui/icons-material/Logout';
-import HistoryIcon from '@mui/icons-material/History';
-import ArticleIcon from '@mui/icons-material/Article';
 
 import RoulettePage from './RoulettePage';
 import SettingsPage from './SettingsPage';
 
-const DraggableAppBar = styled(AppBar)(({ theme }) => ({
-  '-webkit-app-region': 'drag',
-  'box-shadow': 'none',
-  'border-bottom': `1px solid ${theme.palette.divider}`,
-  'position': 'fixed',
-  'width': '100%',
-  'top': 0,
-  'left': 0,
-  [theme.breakpoints.down('sm')]: {
-    '-webkit-app-region': 'no-drag',
-  },
-}));
-
+// 样式化 Drawer，以实现桌面端常驻和移动端临时抽屉
 const StyledDrawer = styled(Drawer)(({ theme }) => ({
   flexShrink: 0,
   '& .MuiDrawer-paper': {
-    width: 240,
+    width: 280, // 稍微加宽以容纳更多内容，更符合 MD3 规范
     boxSizing: 'border-box',
     borderRight: 'none',
-    [theme.breakpoints.up('sm')]: {
+    backgroundColor: theme.palette.background.paper,
+    [theme.breakpoints.up('md')]: {
       top: 0,
     },
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('md')]: {
       width: '100%',
     },
   },
@@ -69,10 +56,11 @@ function AppContent() {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' });
   const [mode, setMode] = useState('dark');
-  const [accentColor, setAccentColor] = useState('#1976d2');
+  const [accentColor, setAccentColor] = useState('#6750A4'); // 使用 MD3 默认紫色作为fallback
   const [userInfo, setUserInfo] = useState(null);
   const navigate = useNavigate();
-  const isMobile = useMediaQuery(theme => theme.breakpoints.down('sm'));
+  const location = useLocation();
+  const isMobile = useMediaQuery(theme => theme.breakpoints.down('md')); // 适配平板和手机
   
   window.showSnackbar = (severity, message) => {
     setSnackbar({ open: true, message, severity });
@@ -83,6 +71,7 @@ function AppContent() {
   };
 
   useEffect(() => {
+    // 获取系统强调色
     if (window.pywebview && window.pywebview.api.get_system_accent_color) {
       window.pywebview.api.get_system_accent_color().then(response => {
         if (response.success && response.color) {
@@ -112,15 +101,23 @@ function AppContent() {
     }
   };
 
+  // 创建一个 MD3 风格的主题
   const theme = createTheme({
     palette: {
       mode,
       primary: {
         main: accentColor,
       },
+      secondary: {
+        main: mode === 'dark' ? '#CFC4DB' : '#6A5F7B',
+      },
       background: {
         default: mode === 'dark' ? '#121212' : '#f5f5f5',
-        paper: mode === 'dark' ? '#1d1d1d' : '#ffffff',
+        paper: mode === 'dark' ? '#1D1D1D' : '#ffffff',
+      },
+      text: {
+        primary: mode === 'dark' ? '#E6E1E5' : '#1D1B20',
+        secondary: mode === 'dark' ? '#CAC4D0' : '#49454F',
       },
     },
     shape: {
@@ -135,12 +132,24 @@ function AppContent() {
         },
       },
       MuiButton: {
+        defaultProps: {
+          variant: 'contained', // 将默认按钮样式设置为 Filled
+        },
         styleOverrides: {
           root: {
-            borderRadius: 16,
+            borderRadius: 24, // MD3 中按钮的圆角更大
             textTransform: 'none',
           },
         },
+      },
+      MuiIconButton: {
+        styleOverrides: {
+          root: {
+            '&:hover': {
+              backgroundColor: mode === 'dark' ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.04)',
+            }
+          }
+        }
       },
       MuiListItemButton: {
         styleOverrides: {
@@ -148,12 +157,19 @@ function AppContent() {
             borderRadius: 12,
             margin: '8px 16px',
             '&.Mui-selected': {
-              backgroundColor: theme => theme.palette.primary.main,
-              color: theme => theme.palette.primary.contrastText,
+              backgroundColor: theme.palette.primary.light,
+              color: theme.palette.primary.contrastText,
               '& .MuiListItemIcon-root': {
-                color: theme => theme.palette.primary.contrastText,
+                color: theme.palette.primary.contrastText,
               },
             },
+          },
+        },
+      },
+      MuiBottomNavigation: {
+        styleOverrides: {
+          root: {
+            backgroundColor: theme.palette.background.paper,
           },
         },
       },
@@ -161,18 +177,18 @@ function AppContent() {
   });
 
   const SideDrawerContent = (
-    <Box sx={{ width: 240, height: '100%', display: 'flex', flexDirection: 'column' }} role="presentation">
+    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }} role="presentation">
       <Box sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
         <Avatar src={userInfo?.avatar_url || ''} alt={userInfo?.username || ''} />
         <Typography variant="h6">{userInfo?.username || '未登录'}</Typography>
       </Box>
       <Divider />
       <List sx={{ flexGrow: 1 }}>
-        <ListItemButton onClick={() => navigate('/')}>
+        <ListItemButton onClick={() => navigate('/')} selected={location.pathname === '/'}>
           <ListItemIcon><CasinoIcon /></ListItemIcon>
           <ListItemText primary="轮盘" />
         </ListItemButton>
-        <ListItemButton onClick={() => navigate('/settings')}>
+        <ListItemButton onClick={() => navigate('/settings')} selected={location.pathname === '/settings'}>
           <ListItemIcon><SettingsIcon /></ListItemIcon>
           <ListItemText primary="设置" />
         </ListItemButton>
@@ -186,8 +202,7 @@ function AppContent() {
       <Box sx={{ p: 2 }}>
         <Button
           fullWidth
-          variant="contained"
-          color="primary"
+          variant="filled"
           onClick={handleLoginClick}
           sx={{ display: userInfo ? 'none' : 'flex' }}
         >
@@ -209,33 +224,35 @@ function AppContent() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       
+      {/* 桌面端常驻侧边导航栏 */}
       {!isMobile && (
         <StyledDrawer variant="permanent" open>
-          <Toolbar /> {/* 占位符，以防内容被 AppBar 遮挡 */}
+          <Toolbar />
           {SideDrawerContent}
         </StyledDrawer>
       )}
 
+      {/* 移动端顶部栏和临时抽屉 */}
       {isMobile && (
-        <DraggableAppBar position="fixed" sx={{ zIndex: theme.zIndex.drawer + 1 }}>
+        <AppBar position="fixed" sx={{ zIndex: theme.zIndex.drawer + 1, backgroundColor: theme.palette.background.paper }}>
           <Toolbar>
             <IconButton
               color="inherit"
               aria-label="open drawer"
               edge="start"
               onClick={handleDrawerToggle}
-              sx={{ mr: 2 }}
+              sx={{ mr: 2, color: theme.palette.text.primary }}
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+            <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1, color: theme.palette.text.primary }}>
               Bangumi Roulette
             </Typography>
-            <IconButton color="inherit" onClick={handleThemeToggle}>
+            <IconButton color="inherit" onClick={handleThemeToggle} sx={{ color: theme.palette.text.primary }}>
               {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
             </IconButton>
           </Toolbar>
-        </DraggableAppBar>
+        </AppBar>
       )}
 
       {isMobile && (
@@ -244,14 +261,17 @@ function AppContent() {
         </StyledDrawer>
       )}
 
+      {/* 主要内容区域 */}
       <Box
         component="main"
         sx={{
           flexGrow: 1,
           p: 3,
-          ml: isMobile ? 0 : '240px',
+          ml: isMobile ? 0 : '280px',
           mt: isMobile ? '56px' : '0',
           mb: isMobile ? '56px' : '0',
+          backgroundColor: theme.palette.background.default,
+          minHeight: '100vh',
         }}
       >
         {!isMobile && <Toolbar />}
@@ -261,11 +281,12 @@ function AppContent() {
         </Routes>
       </Box>
       
+      {/* 移动端底部导航栏 */}
       {isMobile && (
         <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1000 }} elevation={3}>
-          <BottomNavigation showLabels>
-            <BottomNavigationAction label="轮盘" icon={<CasinoIcon />} onClick={() => navigate('/')} />
-            <BottomNavigationAction label="设置" icon={<SettingsIcon />} onClick={() => navigate('/settings')} />
+          <BottomNavigation showLabels value={location.pathname}>
+            <BottomNavigationAction label="轮盘" value="/" icon={<CasinoIcon />} onClick={() => navigate('/')} />
+            <BottomNavigationAction label="设置" value="/settings" icon={<SettingsIcon />} onClick={() => navigate('/settings')} />
           </BottomNavigation>
         </Paper>
       )}
