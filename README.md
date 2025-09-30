@@ -17,7 +17,8 @@ Bangumi-Roulette 是一个桌面应用，通过连接 Bangumi 个人收藏数据
 项目正在进行前端 UI 界面重构与优化，以提升用户体验和功能稳定性。部分功能可能仍在开发或调试阶段。
 ## 📁 项目文件结构
 根据仓库最新内容，项目结构如下：
-```Bangumi-Roulette/
+```
+Bangumi-Roulette/
 ├── .gitignore                 # Git 忽略文件配置
 ├── LICENSE                    # 许可证文件 (MIT)
 ├── main.py                    # 主程序入口 (Python/pywebview/Bottle)
@@ -40,22 +41,30 @@ Bangumi-Roulette 是一个桌面应用，通过连接 Bangumi 个人收藏数据
 ## 🛠️ 安装使用
 运行本项目需要 `Python 3.x` 和 `Node.js/npm` 环境。
 1. 克隆仓库
-```git clone https://github.com/AWA0427/Bangumi-Roulette.git
-cd Bangumi-Roulette```
+```
+git clone https://github.com/AWA0427/Bangumi-Roulette.git
+cd Bangumi-Roulette
+```
 
 2. 安装 `Python` 后端依赖
-```pip install -r requirements.txt```
+```
+pip install -r requirements.txt
+```
 
-3. 构建前端 UI
+4. 构建前端 UI
 进入 ui 目录，安装 Node 依赖并构建前端项目。
-```cd ui
+```
+cd ui
 npm install
 npm run build
-cd ..```
+cd ..
+```
 
 4. 运行应用
 回到项目根目录，启动主程序：
-```python main.py```
+```
+python main.py
+```
 
 ## 📝 说明
 本项目代码由 AI 辅助完成。
