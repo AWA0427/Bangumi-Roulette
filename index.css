@@ -1,0 +1,33 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* 亮色模式 Defaults */
+  --color-primary: #6750A4;
+  --color-secondary: #6A5F7B;
+  --color-bkg-default: #f7f7f8;
+  --color-bkg-paper: #ffffff;
+  --color-text-primary: #1D1B20;
+  --color-text-secondary: #49454F;
+}
+
+/* 🚀 新增: 暗色模式定义 */
+[data-theme="dark"] {
+  --color-primary: #D0BCFF; 
+  --color-secondary: #CFC5D4; 
+  --color-bkg-default: #121212; 
+  --color-bkg-paper: #1E1E1E; 
+  --color-text-primary: #E6E1E5; 
+  --color-text-secondary: #C3C0C9; 
+}
+
+body {
+  /* 使用 CSS 变量以支持主题切换 */
+  background-color: var(--color-bkg-default);
+  color: var(--color-text-primary);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  /* 增加过渡效果 */
+  transition: background-color 0.3s, color 0.3s;
+}
